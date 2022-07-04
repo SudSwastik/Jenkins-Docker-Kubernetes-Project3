@@ -5,8 +5,8 @@ pipeline {
 	}
 	
 	environment {
-		PROJECT_ID = 'jenkins-296812'
-                CLUSTER_NAME = 'k8s-cluster'
+		PROJECT_ID = 'round-water-262008'
+                CLUSTER_NAME = 'kubernetes'
                 LOCATION = 'us-central1-c'
                 CREDENTIALS_ID = 'kubernetes'		
 	}
@@ -18,40 +18,40 @@ pipeline {
 		    }
 	    }
 	    
-	    stage('Build') {
-		    steps {
-			    sh 'mvn clean package'
-		    }
-	    }
+// 	    stage('Build') {
+// 		    steps {
+// 			    sh 'mvn clean package'
+// 		    }
+// 	    }
 	    
-	    stage('Test') {
-		    steps {
-			    echo "Testing..."
-			    sh 'mvn test'
-		    }
-	    }
+// 	    stage('Test') {
+// 		    steps {
+// 			    echo "Testing..."
+// 			    sh 'mvn test'
+// 		    }
+// 	    }
 	    
-	    stage('Build Docker Image') {
-		    steps {
-			    sh 'whoami'
-			    script {
-				    myimage = docker.build("ameintu/devops:${env.BUILD_ID}")
-			    }
-		    }
-	    }
+// 	    stage('Build Docker Image') {
+// 		    steps {
+// 			    sh 'whoami'
+// 			    script {
+// 				    myimage = docker.build("ameintu/devops:${env.BUILD_ID}")
+// 			    }
+// 		    }
+// 	    }
 	    
-	    stage("Push Docker Image") {
-		    steps {
-			    script {
-				    echo "Push Docker Image"
-				    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-            				sh "docker login -u ameintu -p ${dockerhub}"
-				    }
-				        myimage.push("${env.BUILD_ID}")
+// 	    stage("Push Docker Image") {
+// 		    steps {
+// 			    script {
+// 				    echo "Push Docker Image"
+// 				    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
+//             				sh "docker login -u ameintu -p ${dockerhub}"
+// 				    }
+// 				        myimage.push("${env.BUILD_ID}")
 				    
-			    }
-		    }
-	    }
+// 			    }
+// 		    }
+// 	    }
 	    
 	    stage('Deploy to K8s') {
 		    steps{
